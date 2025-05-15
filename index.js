@@ -1,5 +1,8 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+
+
 
 let notes = [
   {
@@ -21,6 +24,8 @@ let notes = [
 
 app.use(express.json())
 
+app.use(cors())
+
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
@@ -40,12 +45,6 @@ app.get('/api/notes/:id', (request, response) => {
   }
 })
 
-const generateId = () => {
-  const maxId =
-    notes.length > 0 ? Math.max(...notes.map((n) => Number(n.id))) : 0
-  return String(maxId + 1)
-}
-
 app.post('/api/notes', (request, response) => {
   const body = request.body
 
@@ -58,7 +57,7 @@ app.post('/api/notes', (request, response) => {
   const note = {
     content: body.content,
     important: body.important || false,
-    id: generateId(),
+    id: Math.floor(Math.random()*1000),
   }
 
   notes = notes.concat(note)
@@ -77,3 +76,4 @@ const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
