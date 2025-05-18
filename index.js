@@ -29,6 +29,7 @@ const requestLogger = (request, response, next) => {
 
 app.use(express.json())
 app.use(requestLogger)
+app.use(express.static('dist'))
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -82,13 +83,33 @@ app.delete('/api/notes/:id', (request, response) => {
   response.status(204).end()
 })
 
+
+app.put('/api/notes/:id', (request, response) => {
+  const body= request.body
+  console.log(body)
+
+  const changedNotes= notes.map((note) => (note.id !== body.id ? note : body))
+  
+  console.log(changedNotes)
+  
+  response.json(body)
+})
+
+
+
+
+
+
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(unknownEndpoint)
 
-const PORT = 3001
+
+
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
