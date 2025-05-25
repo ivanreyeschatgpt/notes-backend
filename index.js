@@ -55,7 +55,7 @@ noteSchema.set('toJSON', {
 
 
 
-const Note = mongoose.model('Note', noteSchema)
+//const Note = mongoose.model('Note', noteSchema)
 
 
 app.use(express.json())
